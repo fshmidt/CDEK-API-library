@@ -13,7 +13,7 @@
 
 # Description
 
-This is a Golang library for working with the CDEK API. It allows you to easily calculate shipping prices based on package size and delivery addresses.
+This is a Golang library for working with the CDEK API. It allows you to easily create an order, validate an address, check the order status, calculate shipping prices based on package size and delivery addresses.
 
 # Realisation
 
@@ -57,3 +57,19 @@ for _, price := range prices {
 ```
 
 The fromAddress and toAddress parameters should be the delivery addresses in string format. The packageSize parameter should be a CDEK_API_lib.Size struct that specifies the dimensions and weight of the package.
+
+To validate the address you can use the same client. Method will switch API address just for validation and return original API url back:
+
+```
+res, uniformAddr, err := client.ValidateAddress(addrFrom)
+```
+
+To create the order you can use the same client. Method will change API url for itself:
+```
+orderId, err := client.CreateOrder(addrFrom, addrTo, size, tariffCode)
+```
+
+To check the order status you can use the same client. You will also need the uuid of the order(which you get from CreateOrder):
+```
+status, err := client.GetStatus(orderId)
+```
